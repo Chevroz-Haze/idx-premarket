@@ -1,0 +1,54 @@
+# .github/workflows/idx_scraper.yml
+# =============================================================================
+# Automated Free Pre-Market IDX Scraper for Chevroz-Haze/idx-premarket
+# Runs Monday to Friday at 06:00, 07:00, 08:00, and 08:30 WIB (UTC+7)
+# =============================================================================
+name: IDX Pre-Market Scraper & FCM Push
+
+on:
+  schedule:
+    # 06:00 WIB (Sun-Thu 23:00 UTC)
+    - cron: '0 23 * * 0-4'
+    # 07:00 WIB (Mon-Fri 00:00 UTC)
+    - cron: '0 0 * * 1-5'
+    # 08:00 WIB (Mon-Fri 01:00 UTC)
+    - cron: '0 1 * * 1-5'
+    # 08:30 WIB (Mon-Fri 01:30 UTC - Final Morning Digest before 08:45 Pre-Open)
+    - cron: '30 1 * * 1-5'
+  workflow_dispatch: # Allows manual trigger from https://github.com/Chevroz-Haze/idx-premarket/actions
+
+jobs:
+  scrape-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Chevroz-Haze/idx-premarket
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Write Firebase Service Account Key
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          if [ -n "$FIREBASE_SERVICE_ACCOUNT" ]; then
+            echo "$FIREBASE_SERVICE_ACCOUNT" > serviceAccountKey.json
+          else
+            echo "Warning: FIREBASE_SERVICE_ACCOUNT secret not set. Running in dry-run mode."
+          fi
+
+      - name: Execute IDX Pre-Market Scraper
+        run: |
+          python idx_disclosure_scraper.py
+
+      - name: Cleanup Service Account Key
+        if: always()
+        run: rm -f serviceAccountKey.json

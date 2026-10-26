@@ -1,0 +1,6 @@
+{
+  "name": "IDX Pre-Market Pulse & Disclosure Intelligence",
+  "description": "Real-time Indonesian market pre-open intelligence dashboard cross-checking idx.co.id disclosures with Python/BeautifulSoup scraper, PDF parser, push notification alerts, and analytics.",
+  "requestFramePermissions": ["notifications"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
