@@ -13,7 +13,9 @@ import {
   Flame,
   Newspaper,
   HelpCircle,
-  Radar
+  Radar,
+  RefreshCw,
+  Clock
 } from 'lucide-react';
 import { VolumeSpikeStock, IDXAnnouncement, NewsCatalystStatus } from '../types';
 
@@ -22,13 +24,19 @@ interface VolumeSpikeRadarProps {
   announcements: IDXAnnouncement[];
   onSelectDisclosure: (item: IDXAnnouncement) => void;
   onTriggerPush: (title: string, body: string, ticker?: string) => void;
+  onRefreshData: () => void;
+  isRefreshing: boolean;
+  lastSyncedWib: string;
 }
 
 export const VolumeSpikeRadar: React.FC<VolumeSpikeRadarProps> = ({
   stocks,
   announcements,
   onSelectDisclosure,
-  onTriggerPush
+  onTriggerPush,
+  onRefreshData,
+  isRefreshing,
+  lastSyncedWib
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [newsFilter, setNewsFilter] = useState<'ALL' | 'HAS_NEWS' | 'NO_NEWS'>('ALL');
@@ -158,20 +166,41 @@ export const VolumeSpikeRadar: React.FC<VolumeSpikeRadarProps> = ({
             </div>
           </div>
 
-          {/* Summary Pills */}
-          <div className="grid grid-cols-3 gap-2.5 shrink-0">
-            <div className="bg-slate-950/80 border border-slate-800 rounded-xl px-3.5 py-2.5 text-center">
-              <span className="text-[10px] uppercase tracking-wider text-slate-400 block">Total Volume Spike</span>
-              <strong className="text-lg font-mono font-bold text-white">{stocks.length} Saham</strong>
+          {/* Summary Pills & Refresh Action */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 shrink-0">
+            <div className="grid grid-cols-3 gap-2">
+              <div className="bg-slate-950/80 border border-slate-800 rounded-xl px-3 py-2 text-center">
+                <span className="text-[10px] uppercase tracking-wider text-slate-400 block">Total Spike</span>
+                <strong className="text-base font-mono font-bold text-white">{stocks.length} Saham</strong>
+              </div>
+              <div className="bg-emerald-950/40 border border-emerald-500/30 rounded-xl px-3 py-2 text-center">
+                <span className="text-[10px] uppercase tracking-wider text-emerald-300 block">Ada Berita</span>
+                <strong className="text-base font-mono font-bold text-emerald-400">{confirmedCatalystCount} Saham</strong>
+              </div>
+              <div className="bg-amber-950/40 border border-amber-500/30 rounded-xl px-3 py-2 text-center">
+                <span className="text-[10px] uppercase tracking-wider text-amber-300 block">Tanpa Berita</span>
+                <strong className="text-base font-mono font-bold text-amber-400">{noNewsTechnicalCount} Saham</strong>
+              </div>
             </div>
-            <div className="bg-emerald-950/40 border border-emerald-500/30 rounded-xl px-3.5 py-2.5 text-center">
-              <span className="text-[10px] uppercase tracking-wider text-emerald-300 block">Ada Berita / Aksi</span>
-              <strong className="text-lg font-mono font-bold text-emerald-400">{confirmedCatalystCount} Saham</strong>
-            </div>
-            <div className="bg-amber-950/40 border border-amber-500/30 rounded-xl px-3.5 py-2.5 text-center">
-              <span className="text-[10px] uppercase tracking-wider text-amber-300 block">Tanpa Berita / UMA</span>
-              <strong className="text-lg font-mono font-bold text-amber-400">{noNewsTechnicalCount} Saham</strong>
-            </div>
+
+            <button
+              onClick={onRefreshData}
+              disabled={isRefreshing}
+              className={`flex flex-col items-center justify-center px-4 py-2 rounded-xl border text-xs font-bold transition cursor-pointer ${
+                isRefreshing
+                  ? 'bg-emerald-600/30 text-emerald-200 border-emerald-500/50'
+                  : 'bg-emerald-600 hover:bg-emerald-500 text-white border-emerald-400/50 shadow-lg shadow-emerald-950/50'
+              }`}
+            >
+              <span className="flex items-center gap-1.5">
+                <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
+                <span>{isRefreshing ? 'Memuat Data...' : 'Refresh Volume & Berita'}</span>
+              </span>
+              <span className="text-[10px] font-mono text-emerald-100/90 mt-0.5 flex items-center gap-1">
+                <Clock className="w-2.5 h-2.5" />
+                Sync: {lastSyncedWib}
+              </span>
+            </button>
           </div>
         </div>
 

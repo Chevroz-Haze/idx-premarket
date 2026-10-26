@@ -11,7 +11,8 @@ import {
   Activity,
   Flame,
   Radio,
-  Cloud
+  Cloud,
+  RefreshCw
 } from 'lucide-react';
 import { MarketSessionInfo } from '../types';
 import { getMarketSessionInfo } from '../utils/marketTime';
@@ -23,6 +24,9 @@ interface HeaderProps {
   onOpenExport: () => void;
   onOpenGuide: () => void;
   onOpenFreeHosting: () => void;
+  onRefreshData: () => void;
+  isRefreshing: boolean;
+  lastSyncedWib: string;
   criticalCount: number;
   totalCount: number;
 }
@@ -34,6 +38,9 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenExport,
   onOpenGuide,
   onOpenFreeHosting,
+  onRefreshData,
+  isRefreshing,
+  lastSyncedWib,
   criticalCount,
   totalCount
 }) => {
@@ -143,6 +150,21 @@ export const Header: React.FC<HeaderProps> = ({
             <Radio className="w-3.5 h-3.5 animate-pulse text-amber-400" />
             <span>{sessionInfo.statusLabel}</span>
           </div>
+
+          {/* Live Refresh Button */}
+          <button
+            onClick={onRefreshData}
+            disabled={isRefreshing}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border transition shadow-sm cursor-pointer ${
+              isRefreshing
+                ? 'bg-emerald-600/30 text-emerald-200 border-emerald-500/50'
+                : 'bg-emerald-600 hover:bg-emerald-500 text-white border-emerald-500/60 shadow-emerald-950/30'
+            }`}
+            title={`Sinkronisasi Ulang Data idx.co.id & Volume Saham (Terakhir: ${lastSyncedWib})`}
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
+            <span>{isRefreshing ? 'Syncing idx.co.id...' : 'Refresh Data'}</span>
+          </button>
 
           {/* Scraper Lab Button */}
           <button
