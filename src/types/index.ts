@@ -101,3 +101,34 @@ export interface MarketSessionInfo {
   countdownFormatted: string;
   isTradingDay: boolean;
 }
+
+export type NewsCatalystStatus =
+  | 'VERIFIED_IDX_FILING'
+  | 'MARKET_NEWS_CATALYST'
+  | 'UMA_WARNING_NO_FUNDAMENTAL_NEWS'
+  | 'NO_NEWS_TECHNICAL_FLOW';
+
+export interface VolumeSpikeStock {
+  id: string;
+  ticker: string;
+  companyName: string;
+  sector: string;
+  closePrice: number;
+  priceChangePct: number;
+  latestTradingDate: string;      // e.g., 2026-10-23 / 2026-10-26
+  previousTradingDate: string;    // e.g., 2026-10-22 / 2026-10-23
+  latestVolumeShares: number;     // Volume on latest trading day
+  previousVolumeShares: number;   // Volume on prior trading day
+  volumeSpikePct: number;         // % increase vs prior trading day
+  volumeRatio: number;            // e.g., 4.29x prior day volume
+  transactionValueBn: number;     // Value in Billion IDR (Miliar Rupiah)
+  hasNews: boolean;
+  newsStatus: NewsCatalystStatus;
+  newsHeadline: string;
+  newsSummary: string;
+  newsSource: string;
+  newsTimestampWIB: string;
+  officialIdxUrl: string;
+  linkedDisclosureId?: string;
+}
+

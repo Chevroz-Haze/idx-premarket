@@ -29,9 +29,13 @@ import {
 import { 
   FreeHostingModal 
 } from './components/FreeHostingModal';
+import {
+  VolumeSpikeRadar
+} from './components/VolumeSpikeRadar';
 import { 
   INITIAL_IDX_ANNOUNCEMENTS, 
-  DEFAULT_ALERT_PREFERENCES 
+  DEFAULT_ALERT_PREFERENCES,
+  VOLUME_SPIKE_STOCKS
 } from './data/mockIdxData';
 import { 
   IDXAnnouncement, 
@@ -44,12 +48,15 @@ import {
   ShieldCheck, 
   Clock, 
   CheckCircle2, 
-  ExternalLink 
+  ExternalLink,
+  FileText,
+  Flame
 } from 'lucide-react';
 
 export default function App() {
   const [announcements, setAnnouncements] = useState<IDXAnnouncement[]>(INITIAL_IDX_ANNOUNCEMENTS);
   const [alertPreferences, setAlertPreferences] = useState<AlertPreferences>(DEFAULT_ALERT_PREFERENCES);
+  const [activeMainTab, setActiveMainTab] = useState<'DISCLOSURES' | 'VOLUME_SPIKE_RADAR'>('VOLUME_SPIKE_RADAR');
   
   // Modals state
   const [selectedDisclosure, setSelectedDisclosure] = useState<IDXAnnouncement | null>(null);
@@ -145,13 +152,65 @@ export default function App() {
           onSelectDisclosure={(item) => setSelectedDisclosure(item)}
         />
 
-        {/* Sorted Disclosures Feed */}
-        <DisclosureFeed
-          announcements={announcements}
-          alertPreferences={alertPreferences}
-          onSelectDisclosure={(item) => setSelectedDisclosure(item)}
-          onSendTestPush={handleSendTestPushForDisclosure}
-        />
+        {/* Primary Workspace Navigation Tabs */}
+        <div className="mb-5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-slate-900/90 border border-slate-800 p-2 rounded-xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full sm:w-auto flex-1">
+            <button
+              onClick={() => setActiveMainTab('DISCLOSURES')}
+              className={`flex items-center justify-center sm:justify-start gap-2.5 px-4 py-2.5 rounded-lg text-xs sm:text-sm font-bold transition cursor-pointer ${
+                activeMainTab === 'DISCLOSURES'
+                  ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-950/50'
+                  : 'bg-slate-950/60 text-slate-400 hover:text-slate-200 border border-slate-800/80'
+              }`}
+            >
+              <FileText className="w-4 h-4 shrink-0" />
+              <span>Pre-Market Disclosures & Corporate Actions</span>
+              <span className={`font-mono text-xs px-2 py-0.5 rounded-md ${
+                activeMainTab === 'DISCLOSURES'
+                  ? 'bg-emerald-950/60 text-emerald-200'
+                  : 'bg-slate-800 text-slate-400'
+              }`}>
+                {announcements.length}
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveMainTab('VOLUME_SPIKE_RADAR')}
+              className={`flex items-center justify-center sm:justify-start gap-2.5 px-4 py-2.5 rounded-lg text-xs sm:text-sm font-bold transition cursor-pointer ${
+                activeMainTab === 'VOLUME_SPIKE_RADAR'
+                  ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-950/50'
+                  : 'bg-slate-950/60 text-slate-400 hover:text-slate-200 border border-slate-800/80'
+              }`}
+            >
+              <Flame className="w-4 h-4 shrink-0 text-amber-300" />
+              <span>Volume Spike vs Yesterday Trading Day & News Finder</span>
+              <span className={`font-mono text-xs px-2 py-0.5 rounded-md ${
+                activeMainTab === 'VOLUME_SPIKE_RADAR'
+                  ? 'bg-emerald-950/60 text-amber-200'
+                  : 'bg-slate-800 text-amber-400'
+              }`}>
+                {VOLUME_SPIKE_STOCKS.length} Stocks
+              </span>
+            </button>
+          </div>
+        </div>
+
+        {/* Active Tab View */}
+        {activeMainTab === 'DISCLOSURES' ? (
+          <DisclosureFeed
+            announcements={announcements}
+            alertPreferences={alertPreferences}
+            onSelectDisclosure={(item) => setSelectedDisclosure(item)}
+            onSendTestPush={handleSendTestPushForDisclosure}
+          />
+        ) : (
+          <VolumeSpikeRadar
+            stocks={VOLUME_SPIKE_STOCKS}
+            announcements={announcements}
+            onSelectDisclosure={(item) => setSelectedDisclosure(item)}
+            onTriggerPush={triggerPushNotification}
+          />
+        )}
       </main>
 
       {/* Simulated Mobile Push Notification Overlay */}
