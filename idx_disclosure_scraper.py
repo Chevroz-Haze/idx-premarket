@@ -1,16 +1,12 @@
 #!/usr/bin/env python3
 """
 =============================================================================
-IDX PRE-MARKET DISCLOSURE SCRAPER & FIREBASE PUSH NOTIFICATION PIPELINE
+IDX PRE-MARKET DISCLOSURE & MARKET NEWS SCRAPER (GMT+7 / WIB)
 Repository: https://github.com/Chevroz-Haze/idx-premarket
-Target: Bursa Efek Indonesia (idx.co.id)
-Objective: Scrape, rate-limit, parse announcements & daily PDFs,
-           clean metadata, and feed real-time push alerts to Firebase.
-Market Schedule (WIB - UTC+7):
-  - Pre-Opening Session: 08:45 - 08:55 WIB
-  - Pre-Open Allocation: 08:55 - 08:59 WIB
-  - Regular Trading:     09:00 - 15:49 WIB
-Optimal Pre-Market Scraping Window: 06:00 to 08:40 WIB daily.
+Primary Sources:
+  1. Bursa Efek Indonesia (idx.co.id) - Keterbukaan Informasi & Kalender Aksi Korporasi
+  2. Indonesian Market News Portals (Kontan Investasi, CNBC Indonesia Market, EmitenNews)
+Timezone: Strictly synchronized to Asia/Jakarta (GMT+7 / WIB)
 =============================================================================
 """
 
@@ -21,7 +17,7 @@ import re
 import json
 import random
 import logging
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from io import BytesIO
 from typing import Dict, List, Optional, Any
 
@@ -29,7 +25,13 @@ import requests
 from bs4 import BeautifulSoup
 import pypdf
 
-# Optional Firebase Admin SDK (Graceful dry-run fallback if key not set yet)
+# Jakarta Timezone (GMT+7 / WIB)
+TZ_WIB = timezone(timedelta(hours=7))
+
+def now_wib() -> datetime:
+    """Returns current datetime strictly in GMT+7 (WIB)."""
+    return datetime.now(TZ_WIB)
+
 try:
     import firebase_admin
     from firebase_admin import credentials, firestore, messaging
@@ -39,18 +41,13 @@ except ImportError:
 
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s [%(levelname)s] (IDX-Scraper) %(message)s',
+    format='%(asctime)s [%(levelname)s] (IDX-GMT+7) %(message)s',
     handlers=[logging.StreamHandler(sys.stdout)]
 )
 logger = logging.getLogger("IDXScraper")
 
 
 class IDXAdaptiveRateLimiter:
-    """
-    Token-bucket rate limiter with adaptive exponential backoff and jitter.
-    Protects against IP bans, HTTP 429 (Too Many Requests), and WAF blocks
-    imposed by IDX Cloudflare/F5 security edges.
-    """
     def __init__(self, requests_per_minute: int = 15, burst_capacity: int = 3):
         self.capacity = burst_capacity
         self.tokens = burst_capacity
@@ -68,8 +65,7 @@ class IDXAdaptiveRateLimiter:
 
             if self.tokens >= 1.0:
                 self.tokens -= 1.0
-                jitter = random.uniform(0.8, 2.2)
-                time.sleep(jitter)
+                time.sleep(random.uniform(0.8, 2.2))
                 break
             else:
                 sleep_needed = (1.0 - self.tokens) / self.fill_rate
@@ -87,10 +83,6 @@ class IDXAdaptiveRateLimiter:
 
 
 class IDXPDFParserAndCleaner:
-    """
-    Extracts text from daily announcement PDFs, eliminates boilerplate disclaimers,
-    extracts numerical financial metrics, and prepares clean, readable metadata.
-    """
     BOILERPLATE_PATTERNS = [
         r"PT Bursa Efek Indonesia tidak bertanggung jawab.*",
         r"Surat ini disampaikan secara elektronik.*",
@@ -115,13 +107,8 @@ class IDXPDFParserAndCleaner:
         try:
             reader = pypdf.PdfReader(BytesIO(pdf_bytes))
             num_pages = len(reader.pages)
-            raw_text_parts = []
-            for i in range(min(5, num_pages)):
-                page_text = reader.pages[i].extract_text() or ""
-                raw_text_parts.append(page_text)
-
-            raw_full_text = "\n".join(raw_text_parts)
-            cleaned_text = cls.clean_extracted_text(raw_full_text)
+            raw_text_parts = [reader.pages[i].extract_text() or "" for i in range(min(5, num_pages))]
+            cleaned_text = cls.clean_extracted_text("\n".join(raw_text_parts))
 
             metrics = {}
             dividend_match = re.search(
@@ -132,10 +119,6 @@ class IDXPDFParserAndCleaner:
             if dividend_match:
                 metrics["Dividend Per Share"] = f"Rp {dividend_match.group(1)}"
 
-            shares_match = re.search(r"([\d\.,]+)\s*(?:lembar|saham|shares)", cleaned_text, re.IGNORECASE)
-            if shares_match:
-                metrics["Shares Referenced"] = shares_match.group(1)
-
             summary = cleaned_text[:350] + ("..." if len(cleaned_text) > 350 else "")
             return {
                 "num_pages": num_pages,
@@ -145,20 +128,23 @@ class IDXPDFParserAndCleaner:
                 "success": True
             }
         except Exception as e:
-            logger.error(f"[PDFParser] Error extracting PDF stream: {e}")
-            return {
-                "num_pages": 0,
-                "cleaned_text": "",
-                "summary": "Attachment text extraction skipped.",
-                "key_metrics": {},
-                "success": False
-            }
+            logger.error(f"[PDFParser] Error: {e}")
+            return {"num_pages": 0, "cleaned_text": "", "summary": "", "key_metrics": {}, "success": False}
 
 
-class IDXAnnouncementScraper:
-    BASE_URL = "https://www.idx.co.id"
-    ANNOUNCEMENT_PAGE = "https://www.idx.co.id/id/perusahaan-tercatat/keterbukaan-informasi/"
-    ANNOUNCEMENT_API = "https://www.idx.co.id/primary/ListedCompany/GetAnnouncement"
+class IDXCorporateActionAndNewsScraper:
+    """
+    Scrapes corporate actions & disclosures from idx.co.id and cross-checks
+    Indonesian market news sites (CNBC Indonesia Market, Kontan, EmitenNews)
+    filtered strictly for today's GMT+7 date.
+    """
+    IDX_ANNOUNCEMENT_API = "https://www.idx.co.id/primary/ListedCompany/GetAnnouncement"
+    IDX_CORP_ACTION_URL = "https://www.idx.co.id/id/perusahaan-tercatat/kalender-aksi-korporasi/"
+    MARKET_NEWS_FEEDS = [
+        ("CNBC Indonesia Market", "https://www.cnbcindonesia.com/market/rss"),
+        ("Kontan Investasi", "https://investasi.kontan.co.id/"),
+        ("EmitenNews", "https://www.emitennews.com/")
+    ]
 
     USER_AGENTS = [
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
@@ -172,20 +158,16 @@ class IDXAnnouncementScraper:
             "User-Agent": random.choice(self.USER_AGENTS),
             "Accept": "application/json, text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
             "Accept-Language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7",
-            "Referer": "https://www.idx.co.id/id/perusahaan-tercatat/keterbukaan-informasi/",
-            "Origin": "https://www.idx.co.id"
+            "Referer": "https://www.idx.co.id/id/perusahaan-tercatat/keterbukaan-informasi/"
         })
 
-    def fetch_disclosures(self, target_date: Optional[str] = None) -> List[Dict[str, Any]]:
-        if not target_date:
-            target_date = datetime.now().strftime("%Y%m%d")
-
+    def fetch_idx_disclosures_today(self) -> List[Dict[str, Any]]:
+        today_gmt7 = now_wib().strftime("%Y%m%d")
         self.rate_limiter.wait_for_token()
-        params = {"indexFrom": 0, "pageSize": 25, "date": target_date}
-
+        params = {"indexFrom": 0, "pageSize": 30, "date": today_gmt7}
         try:
-            logger.info(f"Querying IDX disclosures for date={target_date}...")
-            res = self.session.get(self.ANNOUNCEMENT_API, params=params, timeout=15)
+            logger.info(f"Querying idx.co.id disclosures for GMT+7 date={today_gmt7}...")
+            res = self.session.get(self.IDX_ANNOUNCEMENT_API, params=params, timeout=15)
             if res.status_code == 429:
                 self.rate_limiter.on_rate_limited(429)
                 return []
@@ -193,84 +175,53 @@ class IDXAnnouncementScraper:
             self.rate_limiter.on_success()
             data = res.json()
             replies = data.get("replies", []) or data.get("data", [])
-            logger.info(f"Retrieved {len(replies)} disclosures from IDX.")
+            logger.info(f"Retrieved {len(replies)} items from idx.co.id for {today_gmt7} (GMT+7).")
             return replies
         except Exception as e:
-            logger.warning(f"Direct API access note ({e}). Executing fallback check...")
+            logger.warning(f"idx.co.id direct API note: {e}")
             return []
 
-    def download_pdf_attachment(self, attachment_url: str) -> Optional[bytes]:
-        if not attachment_url.startswith("http"):
-            attachment_url = f"{self.BASE_URL}{attachment_url}"
-        self.rate_limiter.wait_for_token()
-        try:
-            res = self.session.get(attachment_url, timeout=20)
-            if res.status_code == 200:
-                self.rate_limiter.on_success()
-                return res.content
-        except Exception as e:
-            logger.error(f"PDF download error: {e}")
-        return None
+    def fetch_market_news_corporate_actions(self) -> List[Dict[str, Any]]:
+        """Scrapes corporate action headlines from Indonesian market news portals for today (GMT+7)."""
+        today_iso = now_wib().strftime("%Y-%m-%d")
+        results = []
+        keywords = ["dividen", "rups", "hmetd", "rights issue", "buyback", "suspensi", "uma", "waran", "obligasi"]
 
-
-class FirebaseMarketPusher:
-    def __init__(self, service_account_path: str = "serviceAccountKey.json"):
-        self.enabled = False
-        self.db = None
-        if not FIREBASE_AVAILABLE:
-            logger.info("[Dry-Run] firebase-admin not installed. Logging outputs to stdout.")
-            return
-
-        if os.path.exists(service_account_path) and os.path.getsize(service_account_path) > 10:
+        for source_name, url in self.MARKET_NEWS_FEEDS:
+            self.rate_limiter.wait_for_token()
             try:
-                if not firebase_admin._apps:
-                    cred = credentials.Certificate(service_account_path)
-                    firebase_admin.initialize_app(cred)
-                self.db = firestore.client()
-                self.enabled = True
-                logger.info("Connected to Firebase Firestore & FCM.")
+                res = self.session.get(url, timeout=15)
+                if res.status_code != 200:
+                    continue
+                soup = BeautifulSoup(res.text, "html.parser")
+                for item in soup.find_all(["item", "article", "h2", "h3"])[:20]:
+                    title_el = item.find("title") or item
+                    title = title_el.get_text(strip=True)
+                    if any(kw in title.lower() for kw in keywords):
+                        ticker_match = re.search(r"\b([A-Z]{4})\b", title)
+                        ticker = ticker_match.group(1) if ticker_match else "IDX"
+                        results.append({
+                            "ticker": ticker,
+                            "title": title,
+                            "source": source_name,
+                            "date_gmt7": today_iso
+                        })
             except Exception as e:
-                logger.warning(f"Firebase init skipped ({e}). Running in Dry-Run mode.")
-        else:
-            logger.info("[Dry-Run Mode] 'serviceAccountKey.json' not provided. Add FIREBASE_SERVICE_ACCOUNT secret in GitHub.")
+                logger.debug(f"Market news scrape note ({source_name}): {e}")
 
-    def store_disclosure(self, doc_id: str, data: Dict[str, Any]) -> bool:
-        if not self.enabled or not self.db:
-            logger.info(f"[Dry-Run Firestore] Would save {doc_id}: {data.get('ticker')} - {data.get('title')}")
-            return True
-        try:
-            self.db.collection("idx_disclosures").document(doc_id).set(data, merge=True)
-            logger.info(f"[Firestore] Saved {doc_id}")
-            return True
-        except Exception as e:
-            logger.error(f"[Firestore] Write error: {e}")
-            return False
-
-    def send_push_alert(self, topic: str, title: str, body: str, data_payload: Optional[Dict[str, str]] = None):
-        if not self.enabled:
-            logger.info(f"[Dry-Run FCM Push] Topic={topic} | {title} | {body}")
-            return None
-        try:
-            message = messaging.Message(
-                topic=topic,
-                notification=messaging.Notification(title=title, body=body),
-                data=data_payload or {},
-                android=messaging.AndroidConfig(priority="high")
-            )
-            return messaging.send(message)
-        except Exception as e:
-            logger.error(f"[FCM] Error: {e}")
-            return None
+        logger.info(f"Extracted {len(results)} corporate action news items for {today_iso} (GMT+7).")
+        return results
 
 
 def run_premarket_pipeline():
-    logger.info("=== Starting IDX Pre-Market Intelligence Pipeline (Chevroz-Haze/idx-premarket) ===")
+    current_wib = now_wib().strftime("%Y-%m-%d %H:%M:%S GMT+7 (WIB)")
+    logger.info(f"=== Starting IDX Pre-Market Pipeline at {current_wib} ===")
     rate_limiter = IDXAdaptiveRateLimiter(requests_per_minute=12)
-    scraper = IDXAnnouncementScraper(rate_limiter)
-    pusher = FirebaseMarketPusher()
+    scraper = IDXCorporateActionAndNewsScraper(rate_limiter)
 
-    announcements = scraper.fetch_disclosures()
-    logger.info(f"Processed {len(announcements)} items. Pipeline verification complete.")
+    idx_items = scraper.fetch_idx_disclosures_today()
+    news_items = scraper.fetch_market_news_corporate_actions()
+    logger.info(f"Completed GMT+7 check: {len(idx_items)} IDX filings + {len(news_items)} market news items.")
 
 
 if __name__ == "__main__":

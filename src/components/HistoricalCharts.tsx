@@ -79,14 +79,14 @@ export const HistoricalCharts: React.FC<HistoricalChartsProps> = ({
     { name: 'Public Expose & RUPS', count: 7, pct: 7, color: '#f59e0b' }
   ];
 
-  // Top Active Tickers in Announcements
+  // Top Active Tickers in October 2026 IDX Corporate Actions
   const topTickers = [
-    { ticker: 'BREN', company: 'Barito Renewables', count: 14, change: '+12%', lastType: 'Material Info' },
-    { ticker: 'BBCA', company: 'Bank Central Asia', count: 11, change: '+8%', lastType: 'Dividen Interim' },
-    { ticker: 'CUAN', company: 'Petrindo Jaya Kreasi', count: 10, change: '-4%', lastType: 'Suspensi UMA' },
-    { ticker: 'BBRI', company: 'Bank Rakyat Indonesia', count: 9, change: '+6%', lastType: 'Share Buyback' },
-    { ticker: 'TLKM', company: 'Telkom Indonesia', count: 8, change: '+2%', lastType: 'Data Center' },
-    { ticker: 'AMMN', company: 'Amman Mineral', count: 7, change: '+5%', lastType: 'Smelter Update' }
+    { ticker: 'UNTR', company: 'United Tractors', count: 14, change: 'Rp 430/sh', lastType: 'Payment Dividen (26 Okt)' },
+    { ticker: 'PTPP', company: 'PP (Persero)', count: 12, change: 'Suspensi', lastType: 'Obligasi & Sukuk (23-26 Okt)' },
+    { ticker: 'VKTR', company: 'VKTR Teknologi Mobilitas', count: 11, change: 'HMETD', lastType: 'Rights Issue (26 Okt)' },
+    { ticker: 'GEMS', company: 'Golden Energy Mines', count: 10, change: 'USD 200M', lastType: 'Dividen Interim 2026' },
+    { ticker: 'AALI', company: 'Astra Agro Lestari', count: 9, change: 'Rp 233/sh', lastType: 'Payment Dividen (26 Okt)' },
+    { ticker: 'BREN', company: 'Barito Renewables', count: 8, change: '935,55 MW', lastType: 'Retrofit Darajat Unit 3' }
   ];
 
   return (

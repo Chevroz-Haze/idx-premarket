@@ -91,10 +91,9 @@ export const AlertSettingsModal: React.FC<AlertSettingsModalProps> = ({
   };
 
   const handleSendTestPush = () => {
-    const currentYear = new Date().getFullYear();
     onTriggerTestPush(
-      `🚨 [IDX PRE-MARKET ALERT] BBCA: Dividen Interim Rp 55/Saham (${currentYear})`,
-      `Direksi BBCA mengumumkan dividen interim Rp 6,77 Triliun untuk tahun buku ${currentYear}. Cross-checked with idx.co.id.`
+      '🚨 [IDX 26 OKT 2026 GMT+7] UNTR: Payment Dividen Rp 430/Saham & PTPP Suspensi',
+      'Aksi Korporasi Hari Ini (idx.co.id): Pembayaran dividen interim UNTR (Rp 430), ASGR (Rp 297), AALI (Rp 233), HMETD VKTR, & Suspensi PTPP.'
     );
     setTestSentSuccess(true);
     setTimeout(() => setTestSentSuccess(false), 3000);

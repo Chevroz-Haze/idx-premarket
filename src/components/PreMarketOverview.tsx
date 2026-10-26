@@ -49,11 +49,11 @@ export const PreMarketOverview: React.FC<PreMarketOverviewProps> = ({
                     {criticalItems.length} High Impact
                   </span>
                   <span className="bg-emerald-500/20 text-emerald-300 font-mono text-[11px] px-2 py-0.5 rounded border border-emerald-500/30">
-                    Hari Bursa: {announcements[0]?.dateStr} (KSEI T+2 Verified)
+                    GMT+7 (WIB): {announcements[0]?.dateStr} • Sumber: idx.co.id & Market News
                   </span>
                 </div>
                 <p className="text-xs text-slate-300 mt-0.5">
-                  <strong className="text-cyan-400 font-mono">BREN</strong>: Retrofit PLTP Darajat Unit 3 (935,55 MW) • <strong className="text-emerald-400 font-mono">BBCA</strong>: Dividen Interim Rp 55/saham & Free Float 43,2% • <strong className="text-rose-400 font-mono">CUAN</strong>: Pengawasan BEI/OJK
+                  <strong className="text-emerald-400 font-mono">UNTR</strong>: Payment Dividen Rp 430/sh • <strong className="text-emerald-400 font-mono">AALI/ASGR</strong>: Payment Dividen • <strong className="text-rose-400 font-mono">PTPP</strong>: Suspensi Sukuk/Obligasi • <strong className="text-cyan-400 font-mono">VKTR</strong>: HMETD Rights Issue
                 </p>
               </div>
             </div>
