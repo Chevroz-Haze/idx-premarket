@@ -96,6 +96,7 @@ export const DisclosureFeed: React.FC<DisclosureFeedProps> = ({
   const getCategoryLabel = (cat: DisclosureCategory) => {
     switch (cat) {
       case 'CORPORATE_ACTION': return 'Corporate Action';
+      case 'BULLISH_HIGH_VOLUME': return 'Bullish & High Volume (1W)';
       case 'SUSPENSION_UMA': return 'Suspension / UMA';
       case 'FINANCIAL_REPORT': return 'Financial Report';
       case 'MATERIAL_INFORMATION': return 'Material Information';
@@ -116,7 +117,7 @@ export const DisclosureFeed: React.FC<DisclosureFeedProps> = ({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search ticker (e.g. BBCA, CUAN) or subject..."
+              placeholder="Search ticker (e.g. UNTR, TOBA, BRMS, TRUK)..."
               className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-medium"
             />
           </div>
@@ -164,12 +165,12 @@ export const DisclosureFeed: React.FC<DisclosureFeedProps> = ({
         {/* Category Pills */}
         <div className="flex items-center gap-1.5 overflow-x-auto pt-1 pb-0.5 no-scrollbar text-xs">
           {[
-            { id: 'ALL', label: 'All Disclosures' },
-            { id: 'CORPORATE_ACTION', label: 'Dividends & Buybacks' },
+            { id: 'ALL', label: 'All Disclosures & News' },
+            { id: 'BULLISH_HIGH_VOLUME', label: '🔥 Bullish & High Volume (Sepekan)' },
+            { id: 'CORPORATE_ACTION', label: 'Dividends & Rights Issue' },
             { id: 'SUSPENSION_UMA', label: 'Suspension & UMA' },
             { id: 'MATERIAL_INFORMATION', label: 'Material Information' },
-            { id: 'FINANCIAL_REPORT', label: 'Financial Reports' },
-            { id: 'RUPS_PUBLIC_EXPOSE', label: 'Public Expose' }
+            { id: 'RUPS_PUBLIC_EXPOSE', label: 'RUPS / Regulasi BEI' }
           ].map(cat => (
             <button
               key={cat.id}

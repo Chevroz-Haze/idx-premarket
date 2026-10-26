@@ -2,6 +2,7 @@ export type MaterialityLevel = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'INFORMATIONAL';
 
 export type DisclosureCategory =
   | 'CORPORATE_ACTION'
+  | 'BULLISH_HIGH_VOLUME'
   | 'SUSPENSION_UMA'
   | 'FINANCIAL_REPORT'
   | 'RUPS_PUBLIC_EXPOSE'

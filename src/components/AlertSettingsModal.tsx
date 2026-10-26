@@ -355,7 +355,8 @@ export const AlertSettingsModal: React.FC<AlertSettingsModalProps> = ({
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
               {[
-                { key: 'CORPORATE_ACTION', label: 'Corporate Actions (Dividends/Buybacks)' },
+                { key: 'CORPORATE_ACTION', label: 'Corporate Actions (Dividends/HMETD)' },
+                { key: 'BULLISH_HIGH_VOLUME', label: 'Bullish & High Volume (Weekly Momentum)' },
                 { key: 'SUSPENSION_UMA', label: 'Suspensions & UMA Warnings' },
                 { key: 'FINANCIAL_REPORT', label: 'Financial Reports (Quarterly)' },
                 { key: 'MATERIAL_INFORMATION', label: 'Material Info & M&A' },

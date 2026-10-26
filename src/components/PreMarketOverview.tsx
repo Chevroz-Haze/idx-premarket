@@ -53,7 +53,7 @@ export const PreMarketOverview: React.FC<PreMarketOverviewProps> = ({
                   </span>
                 </div>
                 <p className="text-xs text-slate-300 mt-0.5">
-                  <strong className="text-emerald-400 font-mono">UNTR</strong>: Payment Dividen Rp 430/sh • <strong className="text-emerald-400 font-mono">AALI/ASGR</strong>: Payment Dividen • <strong className="text-rose-400 font-mono">PTPP</strong>: Suspensi Sukuk/Obligasi • <strong className="text-cyan-400 font-mono">VKTR</strong>: HMETD Rights Issue
+                  <strong className="text-emerald-400 font-mono">UNTR/AALI/ASGR</strong>: Payment Dividen • <strong className="text-rose-400 font-mono">PTPP</strong>: Suspensi • <strong className="text-amber-300 font-mono">Bullish High-Vol (19–23 Okt)</strong>: <strong className="text-emerald-300 font-mono">TOBA (+53,8%), TRUK (+87,1%), WMUU (+63,6%), BRMS & BUMI</strong>
                 </p>
               </div>
             </div>

@@ -446,6 +446,151 @@ export const INITIAL_IDX_ANNOUNCEMENTS: IDXAnnouncement[] = [
 - Unsuspend: PT Lovina Beach Brewery Tbk (STRK) dibuka kembali perdagangannya di Pasar Reguler dan Pasar Tunai.
 - Radar UMA BEI: DKHH (22 Okt 2026), PNSE (22 Okt 2026), RATU (21 Okt 2026), LUCY & VKTR (20 Okt 2026).`
     }
+  },
+  {
+    id: 'idx-2026-10-26-bullish-toba-brms',
+    ticker: 'TOBA',
+    companyName: 'PT TBS Energi Utama Tbk & PT Bumi Resources Minerals Tbk (BRMS)',
+    category: 'BULLISH_HIGH_VOLUME',
+    materiality: 'HIGH',
+    title: `Saham Bullish & Volume Tinggi Sepekan (19–23 Okt 2026): TOBA Meroket +53,85% & Akumulasi Direksi BRMS`,
+    summary: `Berdasarkan statistik perdagangan BEI periode 19–23 Oktober 2026 & riset market (Investor.id/Kontan), saham PT TBS Energi Utama Tbk (TOBA) meroket +53,85% dalam sepekan ke level Rp 520 (termasuk lonjakan +25,00% ARA pada Jumat, 23 Okt 2026) dengan lonjakan volume tinggi didorong katalis ekosistem EV & EBT. Sementara itu, saham PT Bumi Resources Minerals Tbk (BRMS) mencatatkan tren bullish bervolume masif yang diperkuat aksi borong jutaan saham oleh jajaran Direksi (Insider Buying) di Oktober 2026.`,
+    timestampWIB: `${D.todayStr} 08:12:00`,
+    dateStr: D.todayStr,
+    timeStr: '08:12:00',
+    isPreMarket: true,
+    officialRefNo: `MKT-BULL-VOL/BEI.STAT/19-23OKT-${D.year}`,
+    idxUrl: 'https://www.idx.co.id/id/data-pasar/ringkasan-perdagangan/ringkasan-saham/',
+    crossCheckVerified: true,
+    idxHash: 'sha256-bullish-toba-brms-highvol-20261026',
+    tags: ['Bullish Sepekan', 'TOBA +53.85%', 'BRMS Insider Buy', 'High Volume Breakout', '19–23 Okt 2026'],
+    pdfMetadata: {
+      companyName: 'PT TBS Energi Utama Tbk (TOBA) & PT Bumi Resources Minerals Tbk (BRMS)',
+      ticker: 'TOBA',
+      isinCode: 'ID1000124704',
+      sector: 'Energy & Basic Materials',
+      subSector: 'Renewable Energy Transition & Gold Mining',
+      officialRegNo: `MKT-BULL-VOL/BEI.STAT/19-23OKT-${D.year}`,
+      submissionDateWIB: `${D.todayStr} 08:12:00 WIB (GMT+7 • ${D.todayHuman})`,
+      publishedDateWIB: `${D.todayStr} 08:15:00 WIB`,
+      isPreMarket: true,
+      pdfFileName: 'Riset_Saham_Bullish_Volume_Tinggi_TOBA_BRMS_19_23Okt2026.pdf',
+      pdfFileSizeKb: 540,
+      pdfPages: 6,
+      rawDisclaimersStripped: 15,
+      keyMetrics: {
+        'Kinerja Sepekan TOBA (19–23 Okt 2026)': '+53,85% ke Rp 520 (+25,00% pada 23 Okt 2026)',
+        'Katalis Utama TOBA': 'Ekspansi Ekosistem Kendaraan Listrik (EV) & Transisi EBT',
+        'Katalis Bullish BRMS (Okt 2026)': 'Aksi Borong Saham oleh Direksi (Insider Buying) & Produksi Emas Poboya',
+        'Likuiditas & Volume BRMS': 'Top High-Volume Leader Oktober 2026 dengan Akumulasi Institusional',
+        'Sumber Data Terverifikasi': 'Ringkasan Saham idx.co.id, Investor.id & Kontan (19–23 Oktober 2026)'
+      },
+      extractedSummary: 'TOBA memimpin reli saham energi transisi dengan kenaikan +53,85% sepekan (19–23 Okt 2026) disertai lonjakan volume transaksi, sedangkan BRMS menjadi primadona volume tinggi menyusul keterbukaan informasi pembelian saham oleh jajaran Direksi.',
+      cleanedText: `ANALISIS SAHAM BULLISH DENGAN VOLUME TINGGI (PERIODE 19–23 OKTOBER 2026):
+1. PT TBS Energi Utama Tbk (TOBA):
+   - Harga Penutupan (23 Okt 2026): Rp 520 (+53,85% sepekan; menguat +25,00% pada Jumat 23 Okt 2026).
+   - Analisis Volume: Breakout resisten dengan lonjakan volume di atas rata-rata 20 hari perdagangan.
+2. PT Bumi Resources Minerals Tbk (BRMS):
+   - Status: Uptrend kuat dengan nilai & volume transaksi harian papan atas BEI sepanjang Oktober 2026.
+   - Katalis Keterbukaan Informasi idx.co.id: Jajaran Direksi BRMS melakukan akumulasi pembelian jutaan lembar saham pada Oktober 2026 seiring peningkatan kapasitas pabrik emas di Poboya, Palu.`
+    }
+  },
+  {
+    id: 'idx-2026-10-26-bullish-top-gainers-weekly',
+    ticker: 'TRUK',
+    companyName: 'Top Gainers Bullish Sepekan BEI (TRUK, PNSE, WMUU, PTSN, BUKK)',
+    category: 'BULLISH_HIGH_VOLUME',
+    materiality: 'HIGH',
+    title: `10 Saham Bullish Top Gainers BEI Sepekan (19–23 Okt 2026): TRUK +87,11%, PNSE +70,57%, WMUU +63,64%`,
+    summary: `Rekapitulasi resmi statistik Bursa Efek Indonesia (idx.co.id) pekan 19–23 Oktober 2026 mencatat deretan saham bullish bervolume tinggi yang mencetak penguatan tertinggi saat IHSG melesat +4,90%: TRUK (+87,11%), PNSE (+70,57%), WMUU (+63,64%), BSWD (+43,56%), STRK (+41,30%), PTSN (+39,29%), DKHH (+36,36%), serta BUKK (+35,71%).`,
+    timestampWIB: `${D.todayStr} 07:55:00`,
+    dateStr: D.todayStr,
+    timeStr: '07:55:00',
+    isPreMarket: true,
+    officialRefNo: `STAT-WEEKLY-GAINERS/BEI/19-23OKT-${D.year}`,
+    idxUrl: 'https://www.idx.co.id/id/data-pasar/ringkasan-perdagangan/statistik-bursa/',
+    crossCheckVerified: true,
+    idxHash: 'sha256-weekly-top-gainers-truk-pnse-wmuu-20261026',
+    tags: ['Top Gainers 19–23 Okt', 'TRUK +87.11%', 'WMUU +63.64%', 'PTSN & BUKK Bullish', 'Data Resmi BEI'],
+    pdfMetadata: {
+      companyName: 'Emiten Top Gainers BEI (TRUK, PNSE, WMUU, PTSN, BUKK, FAST)',
+      ticker: 'TRUK',
+      isinCode: 'ID1000143209',
+      sector: 'Multi-Sector Bullish Leaders',
+      subSector: 'Logistics, Poultry, Electronics Manufacturing & Infrastructure',
+      officialRegNo: `STAT-WEEKLY-GAINERS/BEI/19-23OKT-${D.year}`,
+      submissionDateWIB: `${D.todayStr} 07:55:00 WIB (GMT+7 • ${D.todayHuman})`,
+      publishedDateWIB: `${D.todayStr} 08:00:00 WIB`,
+      isPreMarket: true,
+      pdfFileName: 'Statistik_BEI_Top_Gainers_Sepekan_19_23_Oktober_2026.pdf',
+      pdfFileSizeKb: 480,
+      pdfPages: 5,
+      rawDisclaimersStripped: 12,
+      keyMetrics: {
+        'Top Gainer #1 & #2 (19–23 Okt 2026)': 'TRUK (+87,11% ke Rp 6.025) & PNSE (+70,57% ke Rp 655)',
+        'Top Gainer #3 & #4 (19–23 Okt 2026)': 'WMUU (+63,64% ke Rp 36) & TOBA (+53,85% ke Rp 520)',
+        'Top Gainer #5 & #6 (19–23 Okt 2026)': 'BSWD (+43,56% ke Rp 8.075) & STRK (+41,30% ke Rp 130)',
+        'Top Gainer #7, #8 & #9': 'PTSN (+39,29% ke Rp 390), DKHH (+36,36% ke Rp 135), BUKK (+35,71% ke Rp 1.140)',
+        'Top Mover Jumat (23 Okt 2026)': 'WMUU (+33,33%), FAST (+25,00%), PTSP (+25,00%), TOBA (+25,00%)'
+      },
+      extractedSummary: 'Daftar resmi 10 saham paling bullish selama sepekan lalu (19–23 Oktober 2026) berdasarkan data statistik mingguan Bursa Efek Indonesia (BEI) dan publikasi Investor.id/Kontan.',
+      cleanedText: `DAFTAR RESMI SAHAM BULLISH (TOP GAINERS) BEI SEPEKAN (19–23 OKTOBER 2026):
+1. PT Guna Timur Raya Tbk (TRUK): +87,11% (ke Rp 6.025)
+2. PT Pudjiadi & Sons Tbk (PNSE): +70,57% (ke Rp 655)
+3. PT Widodo Makmur Unggas Tbk (WMUU): +63,64% (ke Rp 36; melonjak +33,33% pada 23 Okt 2026)
+4. PT TBS Energi Utama Tbk (TOBA): +53,85% (ke Rp 520; melonjak +25,00% pada 23 Okt 2026)
+5. PT Bank of India Indonesia Tbk (BSWD): +43,56% (ke Rp 8.075)
+6. PT Lovina Beach Brewery Tbk (STRK): +41,30% (ke Rp 130 pasca-unsuspend)
+7. PT Sat Nusapersada Tbk (PTSN): +39,29% (ke Rp 390 dengan lonjakan volume)
+8. PT Cipta Sarana Medika Tbk (DKHH): +36,36% (ke Rp 135)
+9. PT Bukaka Teknik Utama Tbk (BUKK): +35,71% (ke Rp 1.140)`
+    }
+  },
+  {
+    id: 'idx-2026-10-26-ihsg-volume-surge',
+    ticker: 'BUMI',
+    companyName: 'Rekap Likuiditas Tinggi BEI (BUMI, GOTO, ANTM, ADRO) & Rebound IHSG +4,90%',
+    category: 'BULLISH_HIGH_VOLUME',
+    materiality: 'MEDIUM',
+    title: `Nilai Transaksi Harian BEI Melejit +25,42% (Rp 20,34T/Hari): Saham Volume Tertinggi & Rebound IHSG +4,90%`,
+    summary: `Statistik mingguan BEI (19–23 Oktober 2026) menunjukkan rata-rata nilai transaksi harian (RNTH) melonjak +25,42% menjadi Rp 20,34 triliun per hari dengan volume mencapai 34 miliar saham. Arus likuiditas dipimpin oleh saham bervolume jumbo (BUMI, GOTO, BRMS, ANTM, ADRO, BBCA) yang mendorong IHSG menguat +4,90% ke level 5.439,26 dan kapitalisasi pasar naik Rp 426 triliun (+4,66%).`,
+    timestampWIB: `${D.todayStr} 07:35:00`,
+    dateStr: D.todayStr,
+    timeStr: '07:35:00',
+    isPreMarket: true,
+    officialRefNo: `PRESS-REL-BEI/RNTH-OKT4/${D.year}`,
+    idxUrl: 'https://www.idx.co.id/id/berita/siaran-pers/',
+    crossCheckVerified: true,
+    idxHash: 'sha256-bei-weekly-volume-34b-ihsg-rebound-20261026',
+    tags: ['Volume 34 Miliar Saham', 'RNTH +25.42% (Rp 20.34T)', 'IHSG +4.90% Sepekan', 'BUMI • GOTO • ANTM • ADRO'],
+    pdfMetadata: {
+      companyName: 'Bursa Efek Indonesia (Statistik Likuiditas BUMI, GOTO, BRMS, ANTM, ADRO)',
+      ticker: 'BUMI',
+      isinCode: 'ID1000090905',
+      sector: 'IDX Market-Wide Liquidity & High-Volume Leaders',
+      subSector: 'Coal, Tech, Nickel/Gold Mining & Banking Bluechips',
+      officialRegNo: `PRESS-REL-BEI/RNTH-OKT4/${D.year}`,
+      submissionDateWIB: `${D.todayStr} 07:35:00 WIB (GMT+7 • ${D.todayHuman})`,
+      publishedDateWIB: `${D.todayStr} 07:40:00 WIB`,
+      isPreMarket: true,
+      pdfFileName: 'Siaran_Pers_BEI_Statistik_Mingguan_19_23_Oktober_2026.pdf',
+      pdfFileSizeKb: 410,
+      pdfPages: 4,
+      rawDisclaimersStripped: 10,
+      keyMetrics: {
+        'IHSG Sepekan (19–23 Okt 2026)': 'Menguat +4,90% ke posisi 5.439,26 (dari 5.185,10)',
+        'Rata-Rata Nilai Transaksi Harian (RNTH)': 'Melonjak +25,42% menjadi Rp 20,34 Triliun / hari',
+        'Volume Transaksi Harian BEI': 'Tembus ~34,0 Miliar lembar saham / hari',
+        'Kapitalisasi Pasar (Market Cap)': 'Naik +4,66% (+Rp 426 Triliun) menjadi Rp 9.583 Triliun',
+        'Saham Penggerak Volume & Frekuensi': 'BUMI, GOTO, BRMS, ANTM, ADRO, TOBA, BBCA, BMRI'
+      },
+      extractedSummary: 'Siaran pers resmi BEI untuk periode 19–23 Oktober 2026 mengonfirmasi lonjakan rata-rata nilai transaksi harian sebesar +25,42% ke Rp 20,34 triliun dan penguatan IHSG +4,90% yang ditopang akumulasi volume tinggi pada saham energi, tambang mineral, dan perbankan.',
+      cleanedText: `SIARAN PERS BURSA EFEK INDONESIA — DATA PERDAGANGAN 19–23 OKTOBER 2026:
+- Indeks Harga Saham Gabungan (IHSG) ditutup menguat +4,90% pada level 5.439,26 dibandingkan pekan sebelumnya di 5.185,10.
+- Rata-rata nilai transaksi harian (RNTH) Bursa mengalami lonjakan tertinggi yakni +25,42% menjadi Rp 20,34 triliun dari Rp 16,22 triliun pada pekan sebelumnya.
+- Volume transaksi harian mencapai 34 miliar lembar saham dengan kapitalisasi pasar meningkat +4,66% menjadi Rp 9.583 triliun.
+- Saham bervolume transaksi & frekuensi teraktif: BUMI, GOTO, BRMS, ANTM, ADRO, TOBA, dan WMUU.`
+    }
   }
 ];
 
@@ -458,9 +603,10 @@ export const DEFAULT_ALERT_PREFERENCES: AlertPreferences = {
   fcmDeviceToken: 'fcm_token_samsung_s26_ultra_id_89412',
   minMateriality: 'MEDIUM',
   watchlistOnly: false,
-  watchlistTickers: ['UNTR', 'AALI', 'ASGR', 'PTPP', 'VKTR', 'GEMS', 'BREN', 'INET'],
+  watchlistTickers: ['UNTR', 'AALI', 'ASGR', 'PTPP', 'VKTR', 'TOBA', 'BRMS', 'TRUK', 'BUMI', 'BREN'],
   alertCategories: {
     CORPORATE_ACTION: true,
+    BULLISH_HIGH_VOLUME: true,
     SUSPENSION_UMA: true,
     FINANCIAL_REPORT: true,
     RUPS_PUBLIC_EXPOSE: true,
