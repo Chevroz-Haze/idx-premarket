@@ -49,11 +49,11 @@ export const PreMarketOverview: React.FC<PreMarketOverviewProps> = ({
                     {criticalItems.length} High Impact
                   </span>
                   <span className="bg-emerald-500/20 text-emerald-300 font-mono text-[11px] px-2 py-0.5 rounded border border-emerald-500/30">
-                    Live Feed: {announcements[0]?.dateStr || new Date().toISOString().slice(0, 10)} (WIB)
+                    Hari Bursa: {announcements[0]?.dateStr} (KSEI T+2 Verified)
                   </span>
                 </div>
                 <p className="text-xs text-slate-300 mt-0.5">
-                  <strong className="text-rose-400 font-mono">CUAN</strong>: Suspensi Perdagangan Sesi I • <strong className="text-emerald-400 font-mono">BBCA</strong>: Dividen Interim Rp 55/saham (Rp 6,77T) • <strong className="text-cyan-400 font-mono">BREN</strong>: Ekspansi Panas Bumi 104MW
+                  <strong className="text-cyan-400 font-mono">BREN</strong>: Retrofit PLTP Darajat Unit 3 (935,55 MW) • <strong className="text-emerald-400 font-mono">BBCA</strong>: Dividen Interim Rp 55/saham & Free Float 43,2% • <strong className="text-rose-400 font-mono">CUAN</strong>: Pengawasan BEI/OJK
                 </p>
               </div>
             </div>

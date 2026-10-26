@@ -71,34 +71,34 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="flex items-center gap-1.5 font-semibold text-slate-300 whitespace-nowrap">
             <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
             <span className="text-slate-400">IHSG:</span>
-            <span className="text-white font-mono">7,716.55</span>
-            <span className="text-emerald-400 font-mono text-[11px]">+32.18 (+0.42%)</span>
+            <span className="text-white font-mono">5,384.97</span>
+            <span className="text-amber-400 font-mono text-[11px]">-53.40 (-0.98%)</span>
           </div>
           <span className="text-slate-700">•</span>
           <div className="flex items-center gap-1.5 font-semibold text-slate-300 whitespace-nowrap">
             <span className="text-slate-400">LQ45:</span>
-            <span className="text-white font-mono">958.20</span>
-            <span className="text-emerald-400 font-mono text-[11px]">+3.60 (+0.38%)</span>
+            <span className="text-white font-mono">642.15</span>
+            <span className="text-amber-400 font-mono text-[11px]">-6.12 (-0.94%)</span>
           </div>
           <span className="text-slate-700">•</span>
           <div className="flex items-center gap-1.5 font-semibold text-slate-300 whitespace-nowrap">
             <span className="text-slate-400">USD/IDR:</span>
-            <span className="text-white font-mono">15,580</span>
-            <span className="text-emerald-400 font-mono text-[11px]">-25 (-0.16%)</span>
+            <span className="text-white font-mono">18,120</span>
+            <span className="text-amber-400 font-mono text-[11px]">+45 (+0.25%)</span>
           </div>
           <span className="text-slate-700">•</span>
           <div className="flex items-center gap-1.5 font-semibold text-slate-300 whitespace-nowrap">
             <span className="text-slate-400">Indo 10Y:</span>
-            <span className="text-white font-mono">6.64%</span>
-            <span className="text-slate-400 font-mono text-[11px]">bps</span>
+            <span className="text-white font-mono">6.88%</span>
+            <span className="text-slate-400 font-mono text-[11px]">yield</span>
           </div>
         </div>
 
-        {/* Live Jakarta Time & Session Countdown */}
+        {/* Live Jakarta Date, Time & Session Countdown */}
         <div className="flex items-center gap-3 ml-auto text-slate-300 font-mono text-[11px]">
           <div className="flex items-center gap-1.5 bg-slate-800/70 px-2 py-0.5 rounded border border-slate-700/60">
             <Clock className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
-            <span className="text-slate-400">WIB:</span>
+            <span className="text-slate-400 hidden md:inline">{sessionInfo.currentWibDate} •</span>
             <span className="text-emerald-300 font-bold">{sessionInfo.currentWibTime}</span>
           </div>
           <div className="hidden sm:flex items-center gap-1.5 text-slate-400">

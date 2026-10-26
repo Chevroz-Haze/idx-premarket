@@ -7,6 +7,66 @@ export function getJakartaTime(): Date {
   return new Date(utc + 7 * 3600000);
 }
 
+/**
+ * Returns the current or most recent IDX trading day (Mon-Fri).
+ * If current WIB day is Saturday (6) or Sunday (0), rolls back to Friday.
+ */
+export function getLatestTradingDay(baseDate: Date = getJakartaTime()): Date {
+  const d = new Date(baseDate.getTime());
+  const dow = d.getDay();
+  if (dow === 6) {
+    d.setDate(d.getDate() - 1); // Saturday -> Friday
+  } else if (dow === 0) {
+    d.setDate(d.getDate() - 2); // Sunday -> Friday
+  }
+  return d;
+}
+
+/**
+ * Returns the previous valid IDX trading day (Mon-Fri) before `baseDate`.
+ * E.g., if today is Monday (2026-10-26), the previous trading day is Friday (2026-10-23), NOT Sunday!
+ */
+export function getPreviousTradingDay(baseDate: Date = getLatestTradingDay()): Date {
+  const d = new Date(baseDate.getTime());
+  d.setDate(d.getDate() - 1);
+  while (d.getDay() === 0 || d.getDay() === 6) {
+    d.setDate(d.getDate() - 1);
+  }
+  return d;
+}
+
+/**
+ * Adds N valid IDX trading days (skipping Saturdays and Sundays).
+ * Essential for KSEI T+2 settlement rules (Cum Date -> Ex Date -> Recording Date -> Payment Date).
+ */
+export function addTradingDays(startDate: Date, tradingDaysToAdd: number): Date {
+  const d = new Date(startDate.getTime());
+  let remaining = tradingDaysToAdd;
+  while (remaining > 0) {
+    d.setDate(d.getDate() + 1);
+    const dow = d.getDay();
+    if (dow !== 0 && dow !== 6) {
+      remaining--;
+    }
+  }
+  return d;
+}
+
+export function formatIndonesianDate(d: Date, includeWeekday: boolean = false): string {
+  const monthsId = [
+    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+  ];
+  const daysId = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+  const base = `${d.getDate()} ${monthsId[d.getMonth()]} ${d.getFullYear()}`;
+  return includeWeekday ? `${daysId[d.getDay()]}, ${base}` : base;
+}
+
+export function formatYMD(d: Date): string {
+  const pad = (n: number) => n.toString().padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+
 export function getMarketSessionInfo(): MarketSessionInfo {
   const wib = getJakartaTime();
   const hours = wib.getHours();
@@ -49,7 +109,8 @@ export function getMarketSessionInfo(): MarketSessionInfo {
     status = 'CLOSED';
     statusLabel = 'Weekend - Market Closed';
     nextMilestone = 'Monday Pre-Opening (08:45 WIB)';
-    targetSeconds = 0;
+    const daysToMonday = dayOfWeek === 6 ? 2 : 1;
+    targetSeconds = (daysToMonday * 24 * 60 + 525) * 60 - (totalMinutes * 60 + seconds);
   } else if (totalMinutes < 525) {
     // Before 08:45
     status = 'PRE_MARKET';
@@ -87,8 +148,9 @@ export function getMarketSessionInfo(): MarketSessionInfo {
   } else {
     status = 'CLOSED';
     statusLabel = 'Trading Closed (Post-Market Buffer)';
-    nextMilestone = 'Tomorrow Pre-Opening (08:45 WIB)';
-    targetSeconds = (24 * 60 + 525) * 60 - (totalMinutes * 60 + seconds);
+    nextMilestone = isFriday ? 'Monday Pre-Opening (08:45 WIB)' : 'Tomorrow Pre-Opening (08:45 WIB)';
+    const daysForward = isFriday ? 3 : 1;
+    targetSeconds = (daysForward * 24 * 60 + 525) * 60 - (totalMinutes * 60 + seconds);
   }
 
   // Format countdown

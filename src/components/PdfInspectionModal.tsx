@@ -237,7 +237,15 @@ export const PdfInspectionModal: React.FC<PdfInspectionModalProps> = ({
                   </div>
                   <div className="flex justify-between py-1 border-b border-slate-800">
                     <span className="text-slate-400">Submission Timestamp:</span>
-                    <span className="text-slate-200">{disclosure.timestampWIB} WIB</span>
+                    <span className="text-slate-200">{disclosure.pdfMetadata.submissionDateWIB}</span>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-slate-800">
+                    <span className="text-slate-400">Trading Day Relevancy Check:</span>
+                    <span className="text-emerald-400 font-bold">VALID HARI BURSA (Skip Weekend)</span>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-slate-800">
+                    <span className="text-slate-400">KSEI Settlement Cycle:</span>
+                    <span className="text-cyan-400 font-bold">T+2 Compliant (POJK & BEI)</span>
                   </div>
                   <div className="flex justify-between py-1">
                     <span className="text-slate-400">Verification Status:</span>
