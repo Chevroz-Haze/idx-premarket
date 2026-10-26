@@ -517,10 +517,10 @@ export const ScraperLab: React.FC<ScraperLabProps> = ({ isOpen, onClose, onScrap
                   <div className="pl-4">"company_name": "PT Bank Central Asia Tbk",</div>
                   <div className="pl-4">"category": "CORPORATE_ACTION",</div>
                   <div className="pl-4">"materiality": "CRITICAL",</div>
-                  <div className="pl-4">"official_ref_no": "089/BBCA/CS/X/2024",</div>
-                  <div className="pl-4">"published_at_wib": "2024-10-25 07:14:22 WIB",</div>
-                  <div className="pl-4">"pdf_clean_summary": "Interim Dividend Rp 50/share (Total Rp 6.16T)...",</div>
-                  <div className="pl-4">"key_metrics": &#123; "dividend_per_share": 50, "cum_date": "2024-10-28" &#125;,</div>
+                  <div className="pl-4">"official_ref_no": "089/BBCA/CS/X/2026",</div>
+                  <div className="pl-4">"published_at_wib": "2026-10-26 07:14:22 WIB",</div>
+                  <div className="pl-4">"pdf_clean_summary": "Interim Dividend Rp 55/share (Total Rp 6.77T)...",</div>
+                  <div className="pl-4">"key_metrics": &#123; "dividend_per_share": 55, "cum_date": "2026-10-28" &#125;,</div>
                   <div className="pl-4">"cross_check_verified": true</div>
                   <div>&#125;</div>
                 </div>

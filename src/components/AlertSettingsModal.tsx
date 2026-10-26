@@ -91,9 +91,10 @@ export const AlertSettingsModal: React.FC<AlertSettingsModalProps> = ({
   };
 
   const handleSendTestPush = () => {
+    const currentYear = new Date().getFullYear();
     onTriggerTestPush(
-      '🚨 [IDX PRE-MARKET ALERT] BBCA: Dividen Interim Rp 50/Saham',
-      'Direksi BBCA mengumumkan dividen interim Rp 6,16 Triliun. Cum date 28 Okt 2024. Cross-checked with idx.co.id.'
+      `🚨 [IDX PRE-MARKET ALERT] BBCA: Dividen Interim Rp 55/Saham (${currentYear})`,
+      `Direksi BBCA mengumumkan dividen interim Rp 6,77 Triliun untuk tahun buku ${currentYear}. Cross-checked with idx.co.id.`
     );
     setTestSentSuccess(true);
     setTimeout(() => setTestSentSuccess(false), 3000);

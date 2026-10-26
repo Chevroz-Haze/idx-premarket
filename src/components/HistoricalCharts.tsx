@@ -28,20 +28,36 @@ export const HistoricalCharts: React.FC<HistoricalChartsProps> = ({
 
   if (!isOpen) return null;
 
-  // Mock 14-day historical data
-  const volumeHistory = [
-    { date: '12 Okt', total: 42, preMarket: 14, critical: 3 },
-    { date: '14 Okt', total: 68, preMarket: 22, critical: 6 },
-    { date: '15 Okt', total: 55, preMarket: 18, critical: 4 },
-    { date: '16 Okt', total: 72, preMarket: 26, critical: 7 },
-    { date: '17 Okt', total: 60, preMarket: 19, critical: 5 },
-    { date: '18 Okt', total: 48, preMarket: 15, critical: 3 },
-    { date: '21 Okt', total: 84, preMarket: 31, critical: 9 },
-    { date: '22 Okt', total: 91, preMarket: 35, critical: 11 },
-    { date: '23 Okt', total: 76, preMarket: 28, critical: 8 },
-    { date: '24 Okt', total: 64, preMarket: 21, critical: 5 },
-    { date: '25 Okt', total: 58, preMarket: 24, critical: 6 }
+  // Dynamically generate last 11 trading days ending on current Jakarta WIB date
+  const baseMetrics = [
+    { total: 42, preMarket: 14, critical: 3 },
+    { total: 68, preMarket: 22, critical: 6 },
+    { total: 55, preMarket: 18, critical: 4 },
+    { total: 72, preMarket: 26, critical: 7 },
+    { total: 60, preMarket: 19, critical: 5 },
+    { total: 48, preMarket: 15, critical: 3 },
+    { total: 84, preMarket: 31, critical: 9 },
+    { total: 91, preMarket: 35, critical: 11 },
+    { total: 76, preMarket: 28, critical: 8 },
+    { total: 64, preMarket: 21, critical: 5 },
+    { total: 58, preMarket: 24, critical: 6 }
   ];
+
+  const shortMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+  const tradingDays: string[] = [];
+  const cursor = new Date();
+  while (tradingDays.length < baseMetrics.length) {
+    const dow = cursor.getDay();
+    if (dow !== 0 && dow !== 6) {
+      tradingDays.unshift(`${cursor.getDate()} ${shortMonths[cursor.getMonth()]}`);
+    }
+    cursor.setDate(cursor.getDate() - 1);
+  }
+
+  const volumeHistory = baseMetrics.map((m, i) => ({
+    date: tradingDays[i],
+    ...m
+  }));
 
   // Hourly pre-market arrival distribution (06:00 to 09:00 WIB)
   const hourlyCurve = [

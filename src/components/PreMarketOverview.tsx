@@ -43,18 +43,27 @@ export const PreMarketOverview: React.FC<PreMarketOverviewProps> = ({
                 <AlertTriangle className="w-5 h-5" />
               </div>
               <div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <span className="font-bold text-sm text-white">Pre-Market Material Disclosures Detected:</span>
                   <span className="bg-rose-500 text-white font-mono text-xs px-2 py-0.5 rounded font-bold">
                     {criticalItems.length} High Impact
                   </span>
+                  <span className="bg-emerald-500/20 text-emerald-300 font-mono text-[11px] px-2 py-0.5 rounded border border-emerald-500/30">
+                    Live Feed: {announcements[0]?.dateStr || new Date().toISOString().slice(0, 10)} (WIB)
+                  </span>
                 </div>
                 <p className="text-xs text-slate-300 mt-0.5">
-                  <strong className="text-rose-400 font-mono">CUAN</strong>: Suspensi Perdagangan Sesi I • <strong className="text-emerald-400 font-mono">BBCA</strong>: Dividen Interim Rp 50/saham (Rp 6,16T) • <strong className="text-cyan-400 font-mono">BREN</strong>: Ekspansi Panas Bumi 104MW
+                  <strong className="text-rose-400 font-mono">CUAN</strong>: Suspensi Perdagangan Sesi I • <strong className="text-emerald-400 font-mono">BBCA</strong>: Dividen Interim Rp 55/saham (Rp 6,77T) • <strong className="text-cyan-400 font-mono">BREN</strong>: Ekspansi Panas Bumi 104MW
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-2 shrink-0">
+              <button
+                onClick={onOpenScraper}
+                className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/30 transition shadow-sm"
+              >
+                Sync Live IDX
+              </button>
               <button
                 onClick={() => onSelectDisclosure(criticalItems[0])}
                 className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-rose-500 hover:bg-rose-600 text-white transition shadow-sm"

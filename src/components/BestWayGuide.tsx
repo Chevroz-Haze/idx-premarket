@@ -171,7 +171,7 @@ export const BestWayGuide: React.FC<BestWayGuideProps> = ({
               5. Live Cross-Check Against Official idx.co.id Registry
             </h4>
             <p className="text-xs text-slate-300">
-              To eliminate false rumors and synthetic hallucinations, every parsed item is assigned a cryptographic checksum and verified against the official Bursa Efek Indonesia announcement reference number (e.g. <code className="text-slate-200 font-mono">Peng-SPT-00124/BEI.WAS/10-2024</code>), with direct one-click hyperlinks to the exchange's master portal.
+              To eliminate false rumors and synthetic hallucinations, every parsed item is assigned a cryptographic checksum and verified against the official Bursa Efek Indonesia announcement reference number (e.g. <code className="text-slate-200 font-mono">Peng-SPT-00124/BEI.WAS/10-2026</code>), with direct one-click hyperlinks to the exchange's master portal.
             </p>
           </div>
         </div>
